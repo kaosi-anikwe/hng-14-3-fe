@@ -120,7 +120,7 @@ export interface Profile {
   gender: string
   gender_probability: number
   age: number
-  age_group: 'child' | 'teen' | 'adult' | 'senior'
+  age_group: 'child' | 'teenager' | 'adult' | 'senior'
   country_id: string
   country_name: string
   country_probability: number

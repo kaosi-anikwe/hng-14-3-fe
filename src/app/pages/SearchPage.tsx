@@ -11,7 +11,7 @@ const SORT_OPTIONS = [
   { value: 'age', label: 'Age' },
   { value: 'gender_probability', label: 'Gender Probability' },
 ] as const
-const LIMIT_OPTIONS = [10, 25, 50, 100] as const
+const LIMIT_OPTIONS = [10, 25, 50] as const
 
 const EXAMPLE_QUERIES = [
   'females from Nigeria above 30',

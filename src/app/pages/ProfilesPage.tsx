@@ -6,14 +6,14 @@ import type { ProfilesParams } from '../services/api'
 import { queryKeys } from '../services/queryKeys'
 import ProfilesTable from '../components/ProfilesTable'
 
-const AGE_GROUPS = ['child', 'teen', 'adult', 'senior'] as const
+const AGE_GROUPS = ['child', 'teenager', 'adult', 'senior'] as const
 const GENDERS = ['male', 'female'] as const
 const SORT_OPTIONS = [
   { value: 'created_at', label: 'Date Added' },
   { value: 'age', label: 'Age' },
   { value: 'gender_probability', label: 'Gender Probability' },
 ] as const
-const LIMIT_OPTIONS = [10, 25, 50, 100] as const
+const LIMIT_OPTIONS = [10, 25, 50] as const
 
 type SortBy = ProfilesParams['sort_by']
 type Order = ProfilesParams['order']
