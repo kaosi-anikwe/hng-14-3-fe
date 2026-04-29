@@ -10,8 +10,11 @@ import DashboardPage from './pages/DashboardPage'
 import ErrorPage from './pages/ErrorPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { AuthProvider } from './contexts/AuthContext'
+import { ToastProvider, useToast } from './contexts/ToastContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfileDetailPage from './pages/ProfileDetailPage'
+import { setApiErrorHandler } from './services/api'
+import { useEffect } from 'react'
 
 const queryClient = new QueryClient()
 
@@ -37,12 +40,25 @@ const router = createBrowserRouter([
   { path: '*', element: <NotFoundPage /> },
 ])
 
+/** Bridges the Axios error interceptor → Toast context */
+function ApiErrorBridge() {
+  const { toast } = useToast()
+  useEffect(() => {
+    setApiErrorHandler((msg) => toast(msg, 'error'))
+    return () => setApiErrorHandler(null)
+  }, [toast])
+  return null
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <ToastProvider>
+        <ApiErrorBridge />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </ToastProvider>
     </QueryClientProvider>
   )
 }

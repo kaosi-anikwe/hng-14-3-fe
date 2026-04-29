@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 
@@ -9,6 +9,35 @@ export const apiClient = axios.create({
     'X-API-Version': '1',
   },
 })
+
+// --- Error toast bridge ---
+// The interceptor runs outside React, so we use a simple subscriber.
+type ErrorHandler = (message: string) => void
+let errorHandler: ErrorHandler | null = null
+
+export function setApiErrorHandler(handler: ErrorHandler | null) {
+  errorHandler = handler
+}
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (isAxiosError(error)) {
+      const msg: string =
+        error.response?.data?.message ??
+        error.message ??
+        'An unexpected error occurred'
+
+      // Don't toast auth-refresh failures (the refresh interceptor handles those)
+      const url: string = error.config?.url ?? ''
+      const is401 = error.response?.status === 401
+      if (!(is401 && url.startsWith('/auth/'))) {
+        errorHandler?.(msg)
+      }
+    }
+    return Promise.reject(error)
+  },
+)
 
 // --- Refresh interceptor ---
 

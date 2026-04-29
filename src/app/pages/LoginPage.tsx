@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { siGithub } from 'simple-icons'
+import { Search } from "lucide-react"
 
 function SimpleIcon({ icon, size = 20 }: { icon: { path: string; title: string }; size?: number }) {
   return (
@@ -32,7 +33,7 @@ export default function LoginPage() {
         <div className="card-body items-center text-center">
           <div className="mb-4">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl text-primary-content">I</span>
+              <Search size={30} className="text-primary-content" />
             </div>
             <h1 className="card-title text-3xl">Insighta Labs+</h1>
             <p className="text-base-content/60">Profile Intelligence Platform</p>

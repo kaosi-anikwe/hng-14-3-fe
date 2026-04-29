@@ -1,14 +1,15 @@
 import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useToast } from '../contexts/ToastContext'
 import { LayoutDashboard, Users, Search, User, LogOut, Menu, Sun, Moon } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 
 export default function Layout() {
   const { user, logout } = useAuth()
+  const { toast } = useToast()
   const location = useLocation()
   const navigate = useNavigate()
   const [theme, setTheme] = useState('light')
-  const [themeToast, setThemeToast] = useState('')
 
   useEffect(() => {
     function setBroswerTheme() {
@@ -27,14 +28,8 @@ export default function Layout() {
     setTheme(nextTheme)
     localStorage.setItem('insighta_theme', nextTheme)
     document.documentElement.setAttribute('data-theme', nextTheme)
-    setThemeToast(nextTheme)
-  }, [theme])
-
-  useEffect(() => {
-    if (!themeToast) return
-    const timer = setTimeout(() => setThemeToast(''), 1500)
-    return () => clearTimeout(timer)
-  }, [themeToast])
+    toast(`Theme: ${nextTheme}`, 'info')
+  }, [theme, toast])
 
   const handleLogout = async () => {
     await logout()
@@ -140,14 +135,6 @@ export default function Layout() {
           </div>
         </aside>
       </div>
-
-      {themeToast && (
-        <div className="toast toast-bottom toast-center z-50">
-          <div className="alert alert-soft shadow-lg">
-            <span className="capitalize">Theme: {themeToast}</span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
