@@ -22,7 +22,13 @@ export default function Layout() {
   }, [])
 
   const toggleTheme = useCallback(() => {
-    const themes = ['light', 'dark', 'cupcake', 'business', 'cyberpunk', 'forest']
+    const themes = [
+      'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave',
+      'retro', 'cyberpunk', 'valentine', 'halloween', 'garden', 'forest', 'aqua',
+      'lofi', 'pastel', 'fantasy', 'wireframe', 'black', 'luxury', 'dracula',
+      'cmyk', 'autumn', 'business', 'acid', 'lemonade', 'night', 'coffee',
+      'winter', 'dim', 'nord', 'sunset', 'caramellatte', 'abyss', 'silk',
+    ]
     const currentIndex = themes.indexOf(theme)
     const nextTheme = themes[(currentIndex + 1) % themes.length]
     setTheme(nextTheme)

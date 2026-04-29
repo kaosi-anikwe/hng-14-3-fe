@@ -189,7 +189,7 @@ export interface ProfilesResponse {
 export const api = {
   getDashboardStats: () =>
     apiClient
-      .get<{ status: string; dashboard: DashboardStats }>('/users/dashboard')
+      .get<{ status: string; dashboard: DashboardStats }>('/api/dashboard')
       .then((r) => r.data.dashboard),
 
   getProfiles: (params: ProfilesParams) =>
@@ -210,6 +210,6 @@ export const api = {
   // Skip the refresh interceptor — a 401 here means no session exists yet
   getMe: () =>
     apiClient
-      .get<{ user: User }>('/users/me', { _retry: true } as object)
+      .get<{ user: User }>('/api/users/me', { _retry: true } as object)
       .then((r) => r.data.user),
 }
