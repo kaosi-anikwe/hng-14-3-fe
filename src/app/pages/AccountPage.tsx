@@ -1,5 +1,5 @@
 import { useAuth } from '../contexts/AuthContext'
-import { User, Shield, Key, Bell } from 'lucide-react'
+import { Shield, Mail, Clock, User } from 'lucide-react'
 
 import { type User as AccountUser } from '../services/api'
 
@@ -19,168 +19,68 @@ export default function AccountPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1>Account Settings</h1>
-        <p className="text-base-content/60">Manage your account preferences and security</p>
+        <h1>Account</h1>
+        <p className="text-base-content/60">Your profile details</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title">
-                <User size={20} />
-                Profile Information
-              </h2>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Full Name</span>
-                </label>
-                <input type="text" className="input input-bordered" defaultValue={user.username} />
+      <div className="card bg-base-100 shadow-sm max-w-2xl">
+        <div className="card-body">
+          <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
+            <div className="avatar">
+              <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img src={user.avatar_url} alt={user.username} />
               </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input type="email" title="Email" className="input input-bordered" defaultValue={user.email} disabled />
-              </div>
-              <div className="card-actions justify-end mt-4">
-                <button className="btn btn-primary">Save Changes</button>
-              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <h2 className="text-2xl">{user.username}</h2>
+              <span className={`badge ${getRoleBadge(user.role)} mt-1 capitalize`}>
+                {user.role}
+              </span>
             </div>
           </div>
 
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title">
-                <Key size={20} />
-                API Access
-              </h2>
-              <p className="text-sm text-base-content/60 mb-4">
-                Generate API tokens for CLI and programmatic access
-              </p>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">API Token</span>
-                </label>
-                <div className="join">
-                  <input
-                    type="text"
-                    title='Password key'
-                    className="input input-bordered join-item flex-1"
-                    value="insighta_********************************"
-                    disabled
-                  />
-                  <button className="btn join-item">Copy</button>
-                </div>
-              </div>
-              <div className="card-actions justify-end mt-4">
-                <button className="btn btn-outline">Regenerate Token</button>
+          <div className="divider"></div>
+
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <Mail size={18} className="text-base-content/50 shrink-0" />
+              <div>
+                <p className="text-xs text-base-content/50">Email</p>
+                <p>{user.email}</p>
               </div>
             </div>
-          </div>
 
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title">
-                <Bell size={20} />
-                Notifications
-              </h2>
-              <div className="space-y-3">
-                <div className="form-control">
-                  <label className="label cursor-pointer justify-start gap-4">
-                    <input type="checkbox" className="checkbox" defaultChecked />
-                    <div>
-                      <div className="label-text">Email notifications</div>
-                      <div className="text-xs text-base-content/60">Receive updates via email</div>
-                    </div>
-                  </label>
-                </div>
-                <div className="form-control">
-                  <label className="label cursor-pointer justify-start gap-4">
-                    <input type="checkbox" className="checkbox" defaultChecked />
-                    <div>
-                      <div className="label-text">Profile updates</div>
-                      <div className="text-xs text-base-content/60">Get notified of profile changes</div>
-                    </div>
-                  </label>
-                </div>
-                <div className="form-control">
-                  <label className="label cursor-pointer justify-start gap-4">
-                    <input type="checkbox" className="checkbox" />
-                    <div>
-                      <div className="label-text">Weekly digest</div>
-                      <div className="text-xs text-base-content/60">Summary of weekly activity</div>
-                    </div>
-                  </label>
-                </div>
+            <div className="flex items-center gap-3">
+              <User size={18} className="text-base-content/50 shrink-0" />
+              <div>
+                <p className="text-xs text-base-content/50">Username</p>
+                <p>{user.username}</p>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="space-y-6">
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="avatar placeholder">
-                  <div className="bg-neutral text-neutral-content rounded-full w-20">
-                    <span className="text-2xl">{user.username.split(' ').map(n => n[0]).join('')}</span>
-                  </div>
-                </div>
-                <div>
-                  <h3>{user.username}</h3>
-                  <p className="text-sm text-base-content/60">{user.email}</p>
-                </div>
-              </div>
-              <button className="btn btn-outline btn-sm w-full">Change Avatar</button>
-            </div>
-          </div>
-
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title">
-                <Shield size={20} />
-                Role & Permissions
-              </h2>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Current Role</span>
-                  <span className={`badge ${getRoleBadge(user.role)}`}>
-                    {user.role}
-                  </span>
-                </div>
-                <div className="divider my-2"></div>
-                <div className="text-sm text-base-content/60">
-                  <p className="mb-2">Your permissions:</p>
-                  <ul className="list-disc list-inside space-y-1 text-xs">
-                    <li>View all profiles</li>
-                    <li>Create and edit profiles</li>
-                    <li>Access API endpoints</li>
-                    {user.role === 'admin' && (
-                      <>
-                        <li>Manage users</li>
-                        <li>System configuration</li>
-                      </>
-                    )}
-                  </ul>
-                </div>
+            <div className="flex items-center gap-3">
+              <Shield size={18} className="text-base-content/50 shrink-0" />
+              <div>
+                <p className="text-xs text-base-content/50">Role</p>
+                <p className="capitalize">{user.role}</p>
               </div>
             </div>
-          </div>
 
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title">Security</h2>
-              <div className="space-y-2">
-                <button className="btn btn-outline btn-sm w-full">
-                  Change Password
-                </button>
-                <button className="btn btn-outline btn-sm w-full">
-                  2FA Settings
-                </button>
-                <button className="btn btn-outline btn-error btn-sm w-full">
-                  Delete Account
-                </button>
+            <div className="flex items-center gap-3">
+              <Clock size={18} className="text-base-content/50 shrink-0" />
+              <div>
+                <p className="text-xs text-base-content/50">Last Login</p>
+                <p>{user.last_login_at ? new Date(user.last_login_at).toLocaleString() : 'N/A'}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-4.5 h-4.5 shrink-0 flex items-center justify-center">
+                <span className={`inline-block w-2.5 h-2.5 rounded-full ${user.is_active ? 'bg-success' : 'bg-error'}`}></span>
+              </div>
+              <div>
+                <p className="text-xs text-base-content/50">Status</p>
+                <p>{user.is_active ? 'Active' : 'Inactive'}</p>
               </div>
             </div>
           </div>

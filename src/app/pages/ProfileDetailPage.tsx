@@ -46,7 +46,7 @@ export default function ProfileDetailPage() {
             <div className="card-body">
               <div className="flex items-start gap-4">
                 <div className="avatar placeholder">
-                  <div className="bg-neutral text-neutral-content rounded-full w-20">
+                  <div className="flex justify-center items-center bg-neutral text-neutral-content rounded-full w-20">
                     <span className="text-2xl">{profile.name.split(' ').map(n => n[0]).join('')}</span>
                   </div>
                 </div>

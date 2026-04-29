@@ -98,38 +98,83 @@ export interface Profile {
   created_at: string
 }
 
+export interface TopCountry {
+  country_id: string
+  country_name: string
+  count: number
+}
+
+export interface ProfileSummary {
+  id: string
+  name: string
+  gender: string
+  age: number
+  age_group: string
+  country_id: string
+  created_at: string
+}
+
 export interface DashboardStats {
   total_profiles: number
-  new_this_month: number
+  gender_breakdown: Record<string, number>
+  age_group_breakdown: Record<string, number>
+  top_countries: TopCountry[]
+  averages: {
+    age: string | null
+    gender_probability: number | null
+    country_probability: number | null
+  }
+  recent_profiles: ProfileSummary[]
 }
 
 export interface ProfilesParams {
   page?: number
   limit?: number
-  search?: string
+  gender?: string
   age_group?: string
   country_id?: string
+  min_age?: number
+  max_age?: number
+  min_gender_probability?: number
+  min_country_probability?: number
+  sort_by?: 'age' | 'created_at' | 'gender_probability'
+  order?: 'asc' | 'desc'
+}
+
+export interface SearchParams {
+  q: string
+  page?: number
+  limit?: number
+  sort_by?: 'age' | 'created_at' | 'gender_probability'
+  order?: 'asc' | 'desc'
 }
 
 export interface ProfilesResponse {
-  profiles: Profile[]
+  data: Profile[]
   total: number
   page: number
+  limit: number
   total_pages: number
 }
 
 export const api = {
   getDashboardStats: () =>
-    apiClient.get<DashboardStats>('/api/dashboard/stats').then((r) => r.data),
+    apiClient
+      .get<{ status: string; dashboard: DashboardStats }>('/users/dashboard')
+      .then((r) => r.data.dashboard),
 
   getProfiles: (params: ProfilesParams) =>
     apiClient.get<ProfilesResponse>('/api/profiles', { params }).then((r) => r.data),
 
   getProfile: (id: string) =>
-    apiClient.get<Profile>(`/api/profiles/${id}`).then((r) => r.data),
+    apiClient
+      .get<{ data: Profile }>(`/api/profiles/${id}`)
+      .then((r) => r.data.data),
 
-  searchProfiles: (query: string) =>
-    apiClient.post<Profile[]>('/api/profiles/search', { query }).then((r) => r.data),
+  searchProfiles: (params: SearchParams) =>
+    apiClient
+      .get<ProfilesResponse>('/api/profiles/search', { params })
+      .then((r) => r.data),
 
   logout: () => apiClient.post('/auth/logout'),
 
