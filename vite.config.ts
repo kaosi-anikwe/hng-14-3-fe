@@ -1,3 +1,4 @@
+import path from "path"
 import { defineConfig } from 'vite'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
@@ -10,4 +11,17 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
   ],
+  resolve: {
+    alias: {
+      // Alias @ to the src directory
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+
+  // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
+  assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  server: {
+    host: '127.0.0.1',
+  },
 })

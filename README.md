@@ -1,75 +1,147 @@
-# React + TypeScript + Vite
+# Insighta Labs+ Web Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A secure, multi-interface platform for profile intelligence with authentication, role-based access control, and DaisyUI theming.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Authentication
 
-## React Compiler
+- GitHub OAuth login (mock implementation ready for backend integration)
+- Session persistence with localStorage
+- Protected routes with authentication checks
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Role-Based Access Control (RBAC)
 
-Note: This will impact Vite dev & build performances.
+- **Admin**: Full system access, user management
+- **User**: Create, view, and edit profiles
+- **Viewer**: Read-only access
 
-## Expanding the ESLint configuration
+### Pages
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Login** (`/login`)
+   - GitHub OAuth integration
+   - Automatic redirect if already authenticated
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. **Dashboard** (`/dashboard`)
+   - Key metrics: total profiles, active profiles, new this month, average score
+   - Recent activity feed
+   - Quick stats with progress bars
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3. **Profiles List** (`/profiles`)
+   - Advanced filtering (status, company, search)
+   - Pagination (10 per page)
+   - Table view with profile scores
+   - Quick actions to view details
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+4. **Profile Detail** (`/profiles/:id`)
+   - Complete profile information
+   - Contact details and social links
+   - Skills and bio
+   - Activity timeline
+
+5. **Search** (`/search`)
+   - Natural language search
+   - Search across name, skills, company, location, bio
+   - Grid view results
+   - Search suggestions
+
+6. **Account** (`/account`)
+   - Profile settings
+   - API token management (for CLI access)
+   - Notification preferences
+   - Role and permissions display
+   - Theme switcher
+
+### Theming
+
+Built with DaisyUI, supports multiple themes:
+
+- Light
+- Dark
+- Cupcake
+- Business
+- Cyberpunk
+- Forest
+
+Theme preference is persisted to localStorage.
+
+## Tech Stack
+
+- **React** 18.3.1
+- **React Router** 7.14.2
+- **Tailwind CSS** 4.1.12
+- **DaisyUI** 5.5.19
+- **Lucide React** (icons)
+- **Vite** 6.3.5
+
+## API Integration
+
+The application is built with a mock API service layer (`src/app/services/api.ts`) that simulates backend calls. To integrate with your actual backend:
+
+1. Update the API base URL in `src/app/services/api.ts`
+2. Replace mock responses with actual fetch calls
+3. Update the OAuth flow in `src/app/contexts/AuthContext.tsx`
+4. Add proper error handling and loading states
+
+### Expected Backend Endpoints
+
+```
+GET  /api/dashboard/stats
+GET  /api/profiles?page=1&limit=10&status=active&company=TechCorp&search=query
+GET  /api/profiles/:id
+POST /api/profiles/search
+POST /api/auth/github/callback
+POST /api/auth/logout
+GET  /api/user/me
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The Vite dev server is already running. The application is accessible through the preview surface.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Structure
+
 ```
+src/
+├── app/
+│   ├── components/
+│   │   ├── Layout.tsx          # Main layout with sidebar
+│   │   └── ProtectedRoute.tsx  # Route guard
+│   ├── contexts/
+│   │   └── AuthContext.tsx     # Authentication state
+│   ├── pages/
+│   │   ├── LoginPage.tsx
+│   │   ├── DashboardPage.tsx
+│   │   ├── ProfilesPage.tsx
+│   │   ├── ProfileDetailPage.tsx
+│   │   ├── SearchPage.tsx
+│   │   └── AccountPage.tsx
+│   ├── services/
+│   │   └── api.ts              # API service layer (mock)
+│   └── App.tsx                 # Main app with routing
+└── styles/
+    ├── tailwind.css            # Tailwind + DaisyUI
+    └── theme.css               # Custom theme tokens
+```
+
+## Authentication Flow
+
+1. User visits any protected route
+2. `ProtectedRoute` checks authentication status
+3. If not authenticated, redirect to `/login`
+4. User clicks "Sign in with GitHub"
+5. Mock OAuth flow authenticates user
+6. Session stored in localStorage
+7. User redirected to `/dashboard`
+
+## Customization
+
+### Adding New Themes
+
+Edit `src/app/components/Layout.tsx` and add theme names to the `themes` array.
+
+### Adding New Routes
+
+1. Create page component in `src/app/pages/`
+2. Add route in `src/app/App.tsx`
+3. Add navigation item in `src/app/components/Layout.tsx` (if needed)
