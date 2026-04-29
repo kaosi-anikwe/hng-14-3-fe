@@ -4,9 +4,9 @@
 
 The web portal for **Insighta Labs+**, a secure profile intelligence platform. This is the frontend component of a multi-interface system (API, CLI, Web) that shares a single backend. Built with React, TypeScript, Tailwind CSS, and DaisyUI.
 
-> **Related repositories:** Backend · CLI
+> **Related repositories:** [Backend](https://github.com/kaosi-anikwe/hng-14) · [CLI](https://github.com/kaosi-anikwe/hng-14-3-cli)
 >
-> **Live URL:** _\<deployed web portal URL\>_
+> **Live URL:** _https://hng-stage-3-fe-zeta.vercel.app/_
 
 ---
 
