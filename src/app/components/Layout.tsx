@@ -4,6 +4,14 @@ import { useToast } from '../contexts/ToastContext'
 import { LayoutDashboard, Users, Search, User, LogOut, Menu, Sun, Moon } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 
+const themes = [
+  'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave',
+  'retro', 'cyberpunk', 'valentine', 'halloween', 'garden', 'forest', 'aqua',
+  'lofi', 'pastel', 'fantasy', 'wireframe', 'black', 'luxury', 'dracula',
+  'cmyk', 'autumn', 'business', 'acid', 'lemonade', 'night', 'coffee',
+  'winter', 'dim', 'nord', 'sunset', 'caramellatte', 'abyss', 'silk',
+]
+
 export default function Layout() {
   const { user, logout } = useAuth()
   const { toast } = useToast()
@@ -13,22 +21,16 @@ export default function Layout() {
 
   useEffect(() => {
     function setBroswerTheme() {
-      const savedTheme = localStorage.getItem('insighta_theme') || 'light'
-      setTheme(savedTheme)
-      document.documentElement.setAttribute('data-theme', savedTheme)
-
+      const saved = localStorage.getItem('insighta_theme')
+      const resolvedTheme = saved ?? themes[Math.floor(Math.random() * themes.length)]
+      if (!saved) localStorage.setItem('insighta_theme', resolvedTheme)
+      setTheme(resolvedTheme)
+      document.documentElement.setAttribute('data-theme', resolvedTheme)
     }
     setBroswerTheme()
   }, [])
 
   const toggleTheme = useCallback(() => {
-    const themes = [
-      'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave',
-      'retro', 'cyberpunk', 'valentine', 'halloween', 'garden', 'forest', 'aqua',
-      'lofi', 'pastel', 'fantasy', 'wireframe', 'black', 'luxury', 'dracula',
-      'cmyk', 'autumn', 'business', 'acid', 'lemonade', 'night', 'coffee',
-      'winter', 'dim', 'nord', 'sunset', 'caramellatte', 'abyss', 'silk',
-    ]
     const currentIndex = themes.indexOf(theme)
     const nextTheme = themes[(currentIndex + 1) % themes.length]
     setTheme(nextTheme)
