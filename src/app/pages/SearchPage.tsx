@@ -16,7 +16,7 @@ const LIMIT_OPTIONS = [10, 25, 50] as const
 const EXAMPLE_QUERIES = [
   'females from Nigeria above 30',
   'male adults from United States',
-  'teenagers below than 16',
+  'teenagers below 16',
   'adults from Germany with above 40',
 ]
 
