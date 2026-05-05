@@ -13,6 +13,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import { ToastProvider, useToast } from './contexts/ToastContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfileDetailPage from './pages/ProfileDetailPage'
+import UploadPage from './pages/UploadPage'
 import { setApiErrorHandler } from './services/api'
 import { useEffect } from 'react'
 
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
           { path: '/profiles/:id', element: <ProfileDetailPage /> },
           { path: '/search', element: <SearchPage /> },
           { path: '/account', element: <AccountPage /> },
+          { path: '/upload', element: <UploadPage /> },
         ],
       },
     ],
