@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, Outlet, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
-import { LayoutDashboard, Users, Search, User, LogOut, Menu, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, Users, Search, User, LogOut, Menu, Sun, Moon, Upload } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 
 const themes = [
@@ -48,6 +48,7 @@ export default function Layout() {
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/profiles', label: 'Profiles', icon: Users },
     { path: '/search', label: 'Search', icon: Search },
+    { path: '/upload', label: 'Upload', icon: Upload },
     { path: '/account', label: 'Account', icon: User }
   ]
 
